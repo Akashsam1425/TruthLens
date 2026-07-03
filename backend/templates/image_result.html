@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>TruthLens Image Report</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="card">
+
+<h1>TruthLens Image Report</h1>
+
+<p class="subtitle">
+
+AI Image Authenticity Analysis
+
+</p>
+
+<hr>
+
+<h2>🖼 File Information</h2>
+
+<div class="stat-card">
+
+<h3>{{ filename }}</h3>
+
+</div>
+
+<hr>
+
+<h2>📷 Image Details</h2>
+
+<div class="result-grid">
+
+<div class="stat-card">
+<h3>Resolution</h3>
+<div class="big-number">
+{{ image.resolution }}
+</div>
+</div>
+
+<div class="stat-card">
+<h3>Format</h3>
+<div class="big-number">
+{{ image.format }}
+</div>
+</div>
+
+<div class="stat-card">
+<h3>Color Mode</h3>
+<div class="big-number">
+{{ image.color_mode }}
+</div>
+</div>
+
+<div class="stat-card">
+<h3>File Size</h3>
+<div class="big-number">
+{{ image.file_size }} KB
+</div>
+</div>
+
+</div>
+
+<hr>
+
+<h2>📸 Camera Information</h2>
+
+<div class="result-grid">
+
+<div class="stat-card">
+<h3>Camera Make</h3>
+<div class="big-number">
+{{ image.camera_make }}
+</div>
+</div>
+
+<div class="stat-card">
+<h3>Camera Model</h3>
+<div class="big-number">
+{{ image.camera_model }}
+</div>
+</div>
+
+<div class="stat-card">
+<h3>Capture Date</h3>
+<div class="big-number">
+{{ image.capture_date }}
+</div>
+</div>
+
+</div>
+
+<hr>
+
+<h2 style="text-align:center;">
+
+🤖 AI Image Suspicion Score
+
+</h2>
+
+<div class="progress">
+
+<div class="progress-bar"
+
+style="width:{{ image.ai_score }}%;">
+
+</div>
+
+</div>
+
+<br>
+
+<h2 style="text-align:center;
+font-size:60px;
+color:#38bdf8;">
+
+{{ image.ai_score }}%
+
+</h2>
+
+<h3 style="text-align:center;">
+Risk Level : <span class="risk-{{ risk_level | lower }}">{{ risk_level }}</span>
+</h3>
+
+<hr>
+
+<h2>⚠ Suspicious Indicators</h2>
+
+<div class="pattern-list">
+
+{% if image.reasons %}
+
+<ul>
+
+{% for reason in image.reasons %}
+
+<li>{{ reason }}</li>
+
+{% endfor %}
+
+</ul>
+
+{% else %}
+
+<p>No suspicious indicators detected.</p>
+
+{% endif %}
+
+</div>
+
+<br>
+
+<div class="result-actions">
+
+<a class="button button-secondary" href="{{ url_for('download_report', filename=report_name) }}">
+Download PDF Report
+</a>
+
+<a href="/">
+
+<span class="button button-primary">
+
+Analyze Another File
+
+</span>
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

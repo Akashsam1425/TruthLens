@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis History | TruthLens</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<nav class="navbar">
+    <a class="logo" href="{{ url_for('home') }}">TruthLens</a>
+    <div class="nav-links">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a class="active" href="{{ url_for('history.history') }}">History</a>
+    </div>
+</nav>
+
+<main class="history-container">
+    <section class="history-card">
+        <div class="history-heading">
+            <div>
+                <h1>Analysis History</h1>
+                <p class="history-summary">{{ total_records }} matching analysis{% if total_records != 1 %}es{% endif %}</p>
+            </div>
+        </div>
+
+        <form class="history-filters" method="GET" action="{{ url_for('history.history') }}">
+            <label>
+                <span>Search by file name</span>
+                <input type="search" name="search" value="{{ filters.filename }}" placeholder="Search files...">
+            </label>
+            <label>
+                <span>File type</span>
+                <select name="file_type">
+                    <option value="">All types</option>
+                    {% for file_type in ['PDF', 'DOCX', 'JPG', 'JPEG', 'PNG'] %}
+                    <option value="{{ file_type }}" {% if filters.file_type == file_type %}selected{% endif %}>{{ file_type }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>
+                <span>Risk level</span>
+                <select name="risk_level">
+                    <option value="">All risks</option>
+                    {% for risk in ['Low', 'Medium', 'High'] %}
+                    <option value="{{ risk }}" {% if filters.risk_level == risk %}selected{% endif %}>{{ risk }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>
+                <span>Upload date</span>
+                <input type="date" name="date" value="{{ filters.upload_date }}">
+            </label>
+            <div class="filter-actions">
+                <button type="submit" class="button button-primary">Apply</button>
+                <a class="button button-secondary" href="{{ url_for('history.history') }}">Reset</a>
+            </div>
+        </form>
+
+        <div class="table-wrapper">
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>File Name</th>
+                        <th>Upload Date (UTC)</th>
+                        <th>AI Score</th>
+                        <th>Risk Level</th>
+                        <th>File Type</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for analysis in analyses %}
+                    <tr>
+                        <td>
+                            <strong title="{{ analysis.filename }}">{{ analysis.filename }}</strong>
+                            <small>{{ analysis.analysis_type }}</small>
+                        </td>
+                        <td>{{ analysis.upload_datetime[:19] | replace('T', ' ') }}</td>
+                        <td>{{ analysis.ai_score | round(1) }}%</td>
+                        <td><span class="risk-badge risk-{{ analysis.risk_level | lower }}">{{ analysis.risk_level }}</span></td>
+                        <td>{{ analysis.file_type }}</td>
+                        <td>
+                            <div class="row-actions">
+                                <a class="button button-small button-primary" href="{{ url_for('download_report', filename=analysis.report_path, view=1) }}" target="_blank" rel="noopener">View Report</a>
+                                <form method="POST" action="{{ url_for('history.delete_history_record', analysis_id=analysis.id) }}" onsubmit="return confirm('Delete this history record? The report file will be preserved.');">
+                                    <input type="hidden" name="search" value="{{ filters.filename }}">
+                                    <input type="hidden" name="file_type" value="{{ filters.file_type }}">
+                                    <input type="hidden" name="risk_level" value="{{ filters.risk_level }}">
+                                    <input type="hidden" name="date" value="{{ filters.upload_date }}">
+                                    <input type="hidden" name="page" value="{{ page }}">
+                                    <button type="submit" class="button button-small button-danger">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" class="empty-state">No analyses match the selected filters.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if total_pages > 1 %}
+        <nav class="pagination" aria-label="History pages">
+            {% if page > 1 %}
+            <a href="{{ url_for('history.history', page=page-1, search=filters.filename, file_type=filters.file_type, risk_level=filters.risk_level, date=filters.upload_date) }}">Previous</a>
+            {% endif %}
+            <span>Page {{ page }} of {{ total_pages }}</span>
+            {% if page < total_pages %}
+            <a href="{{ url_for('history.history', page=page+1, search=filters.filename, file_type=filters.file_type, risk_level=filters.risk_level, date=filters.upload_date) }}">Next</a>
+            {% endif %}
+        </nav>
+        {% endif %}
+    </section>
+</main>
+</body>
+</html>

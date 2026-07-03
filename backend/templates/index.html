@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TruthLens</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<nav class="navbar">
+    <a class="logo" href="{{ url_for('home') }}">TruthLens</a>
+    <div class="nav-links">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('history.history') }}">History</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="card">
+
+        <h1>TruthLens</h1>
+
+        <p class="subtitle">
+            AI Content Authenticity Verification System
+        </p>
+
+        <form action="/upload"
+      method="POST"
+      enctype="multipart/form-data">
+
+    <label for="file-upload" class="upload-box">
+
+        <div class="upload-icon">☁️</div>
+
+        <h2>Drag & Drop File Here</h2>
+
+        <p>or Click to Browse</p>
+
+        <small>
+            Supported:
+            PDF • DOCX • JPG • PNG
+        </small>
+
+        <input
+            id="file-upload"
+            type="file"
+            name="file"
+            required>
+
+    </label>
+
+    <button type="submit">
+
+        Analyze File
+
+    </button>
+
+</form>
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>

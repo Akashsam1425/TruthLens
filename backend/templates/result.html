@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>TruthLens Report</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="card">
+
+<h1>TruthLens Report</h1>
+
+<p class="subtitle">
+
+AI Content Authenticity Analysis Platform
+
+</p>
+
+<hr>
+
+<h2>📄 File Information</h2>
+
+<div class="stat-card">
+
+<h3>{{ filename }}</h3>
+
+<p style="margin-top:10px;color:#cbd5e1;">
+Type : {{ file_type }}
+</p>
+
+</div>
+
+<hr>
+
+<h2>📊 Document Statistics</h2>
+
+<div class="result-grid">
+
+<div class="stat-card">
+<h3>Words</h3>
+<div class="big-number">{{ analysis.word_count }}</div>
+</div>
+
+<div class="stat-card">
+<h3>Characters</h3>
+<div class="big-number">{{ analysis.character_count }}</div>
+</div>
+
+<div class="stat-card">
+<h3>No Space Characters</h3>
+<div class="big-number">{{ analysis.character_without_spaces }}</div>
+</div>
+
+<div class="stat-card">
+<h3>Sentences</h3>
+<div class="big-number">{{ analysis.sentence_count }}</div>
+</div>
+
+<div class="stat-card">
+<h3>Paragraphs</h3>
+<div class="big-number">{{ analysis.paragraph_count }}</div>
+</div>
+
+<div class="stat-card">
+<h3>Unique Words</h3>
+<div class="big-number">{{ analysis.unique_words }}</div>
+</div>
+
+<div class="stat-card">
+<h3>Average Word Length</h3>
+<div class="big-number">{{ analysis.average_word_length }}</div>
+</div>
+
+<div class="stat-card">
+<h3>Average Sentence Length</h3>
+<div class="big-number">{{ analysis.average_sentence_length }}</div>
+</div>
+
+<div class="stat-card">
+<h3>Vocabulary Diversity</h3>
+<div class="big-number">
+{{ analysis.vocabulary_diversity }}%
+</div>
+</div>
+
+<div class="stat-card">
+<h3>Reading Time</h3>
+<div class="big-number">
+{{ analysis.reading_time }} min
+</div>
+</div>
+
+<div class="stat-card">
+<h3>Long Sentences</h3>
+<div class="big-number">
+{{ analysis.long_sentences }}
+</div>
+</div>
+
+<div class="stat-card">
+<h3>Short Sentences</h3>
+<div class="big-number">
+{{ analysis.short_sentences }}
+</div>
+</div>
+
+<div class="stat-card">
+<h3>Repeated Words</h3>
+<div class="big-number">
+{{ analysis.repeated_words }}
+</div>
+</div>
+
+</div>
+
+<hr>
+
+<h2 style="text-align:center;">
+🤖 AI Suspicion Score
+</h2>
+
+<div class="progress">
+
+<div class="progress-bar"
+
+style="width:{{ final_ai_score }}%;">
+
+</div>
+
+</div>
+
+<br>
+
+<h2 style="text-align:center;
+font-size:65px;
+color:#38bdf8;">
+
+{{ final_ai_score }}%
+
+</h2>
+
+<h3 style="text-align:center;">
+
+Risk Level :
+
+{% if risk_level=="Low" %}
+
+<span class="risk-low">
+🟢 {{ risk_level }}
+</span>
+
+{% elif risk_level=="Medium" %}
+
+<span class="risk-medium">
+🟡 {{ risk_level }}
+</span>
+
+{% else %}
+
+<span class="risk-high">
+🔴 {{ risk_level }}
+</span>
+
+{% endif %}
+
+</h3>
+
+<hr>
+
+<h2>⚠ AI Indicators</h2>
+
+<div class="pattern-list">
+
+{% if reasons %}
+
+<ul>
+
+{% for reason in reasons %}
+
+<li>✔ {{ reason }}</li>
+
+{% endfor %}
+
+</ul>
+
+{% else %}
+
+<p>No suspicious patterns detected.</p>
+
+{% endif %}
+
+</div>
+
+<hr>
+
+<h2>📝 Extracted Text Preview</h2>
+
+<div class="preview-box">
+
+<pre>{{ preview_text }}</pre>
+
+</div>
+
+<br>
+
+<div class="result-actions">
+
+<a class="button button-secondary" href="{{ url_for('download_report', filename=report_name) }}">
+Download PDF Report
+</a>
+
+<a href="/">
+
+<span class="button button-primary">
+
+🔄 Analyze Another File
+
+</span>
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>
