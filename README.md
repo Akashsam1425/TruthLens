@@ -1,4 +1,9 @@
 # 🔍 TruthLens
+![Python](https://img.shields.io/badge/Python-3.14-blue?logo=python)
+![Flask](https://img.shields.io/badge/Flask-3.1-black?logo=flask)
+![SQLite](https://img.shields.io/badge/SQLite-Database-blue?logo=sqlite)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Status](https://img.shields.io/badge/Status-Active-success)
 
 **AI-Powered Content Authenticity Verification System**
 
